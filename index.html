@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>feliz cumpleaños, kirarito</title>
+<style>
+  body{
+    margin:0;
+    background:#fefcac;
+    color:#eee;
+    font-family:sans-serif;
+  }
+  .viewport{
+    height:100vh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling: touch;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:20px;
+    box-sizing:border-box;
+  }
+  .feed{
+    max-width:900px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .card{
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,0);
+  }
+  .card img{
+    border-radius: 12px;
+    border: #805831 solid 3px;
+    display:block;
+    width:98%;
+    height:auto;
+    object-fit:cover;
+  }
+  .meta{
+    padding:8px 12px;
+    font-size:14px;
+    color:#222;
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="viewport" id="viewport">
+    <div class="feed" id="feed"></div>
+  </div>
+
+<script>
+// Lista de tus fotos (pueden ser rutas locales o URLs absolutas)
+const fotos = [
+  "uno.png",
+  "dos.jpg",
+  "tres.jpg",
+  "cuatro.jpg",
+  "cinco.jpg",
+  "seis.jpeg",
+  "siete.jpeg",
+  "ocho.jpeg",
+  "nueve.jpeg",
+  "diez.jpg",
+  "once.jpg",
+  "doce.jpeg",
+  "trece.jpeg",
+  "catorce.png",
+  "quince.jpg",
+  "dieciseis.jpg",
+  "diecisiete.jpg",
+  "dieciocho.jpg",
+  "diecinueve.jpg",
+  "veinte.jpg",
+  "veintiuno.jpg",
+  "veintidos.jpg",
+  "veintitres.jpg"
+  // puedes agregar todas las que quieras
+];
+
+const feed = document.getElementById('feed');
+const viewport = document.getElementById('viewport');
+
+let indice = 0;           // por dónde vamos en la lista
+const BATCH = 2;          // cuántas fotos cargar por gesto
+let lastScrollTop = 0;
+let lastTrigger = 0;
+
+// crea una tarjeta con foto
+function crearCard(src, i){
+  const card = document.createElement('div');
+  card.className = 'card';
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = "Foto " + (i+1);
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  card.appendChild(img);
+  card.appendChild(meta);
+  return card;
+}
+
+// añadir fotos al final
+function cargarFotos(n=BATCH){
+  for(let j=0; j<n; j++){
+    if(indice >= fotos.length) return; // ya no hay más
+    const card = crearCard(fotos[indice], indice);
+    feed.appendChild(card);
+    indice++;
+  }
+}
+
+// detecta scroll hacia arriba
+viewport.addEventListener('scroll', () => {
+  const st = viewport.scrollTop;
+  if(st < lastScrollTop && Date.now()-lastTrigger>400){
+    lastTrigger = Date.now();
+    cargarFotos();
+  }
+  lastScrollTop = st;
+});
+
+// fotos iniciales
+cargarFotos(3);
+</script>
+</body>
+</html>
